@@ -1,0 +1,8 @@
+#If you need a quick kubernetes cluster AND have your AWS credientials configured in your AWS CLI via "aws configure".
+aws s3api create-bucket --bucket chad-kops-bucket --region us-west-2 --create-bucket-configuration LocationConstraint=us-west-2
+aws s3api put-bucket-versioning --bucket chad-kops-bucket --versioning-configuration Status=Enabled
+export KOPS_CLUSTER_NAME=chad.k8s.local
+export KOPS_STATE_STORE=s3://chad-kops-bucket
+kops create cluster --node-count=2 --node-size=t2.medium --zones=us-west-2b
+kops update cluster --name chad.k8s.local --yes
+kops delete cluster --name chad.k8s.local --yes
